@@ -5,10 +5,11 @@
 const express = require('express');
 const router = express.Router();
 const constantCtrl = require('./constant.controller');
+const {checkAuth} = require('../../common/lib/auth');
 
 const Constant = require('../../db/models/constant');
 
-router.post('/', async (req,res)=>{
+router.post('/', checkAuth, async (req,res)=>{
   try {
     return await constantCtrl.createConstant(req,res)
   } catch(err){

@@ -6,6 +6,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
+const path = require('path');
 
 const app = express();
 
@@ -14,6 +15,19 @@ app.use(logger(':method :url :status :res[content-length] - :response-time ms'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
+app.get('/', (req,res)=>{
+  const options = {
+    root: path.resolve(__dirname,  '../dist'),
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    }
+  };
+  console.log(options.root);
+  const fileName = 'index.html';
+  res.sendFile(fileName, options)
+});
 app.use('/test', require('./test'));
 app.use('/constants', require('./constant'));
 app.use('/users', require('./user'));
