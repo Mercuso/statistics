@@ -3,9 +3,16 @@
  */
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
+const envLib = require('../common/lib/env');
 
+envLib.checkForExistence([
+  'DB_MONGO_USER',
+  'DB_MONGO_PASSWORD',
+  'DB_MONGO_DOMAIN',
+  'DB_MONGO_NAME'
+]);
 
-const DB_URL = `mongodb://ds121726.mlab.com:21726/alex_db`;
+const DB_URL = `mongodb://${process.env.DB_MONGO_DOMAIN}/${process.env.DB_MONGO_NAME}`;
 const connectionOptions = {
   useMongoClient:true,
   auth:{
