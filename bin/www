@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+require('dotenv').config();
+
+const http = require('http');
+const app = require('../api');
+
+const envLib = require('../common/lib/env');
+//var models = require('../models');
+const db = require('../db');
+//check env vars:
+envLib.checkForExistence(['PORT']);
+
+const port = process.env.PORT;
+console.log({port});
+
+const server = http.createServer(app);
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+function onError(error) {
+  console.log(error.code)
+}
+
+function onListening() {
+  console.log('listening on port ', port)
+}
