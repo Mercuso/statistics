@@ -43,9 +43,12 @@ class UserClass {
 
   static async generateToken(){
     return jwt.sign({
-      exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60),//after 24 hrs
+      exp: Math.floor(Date.now() / 1000) + (72 * 60 * 60),//after 72 hrs
       role: 'user'
     }, process.env.SECRET);
+  }
+  async verifyToken(){
+    return jwt.verify(this.token, process.env.SECRET)
   }
 
 }

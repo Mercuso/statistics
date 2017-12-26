@@ -33,6 +33,12 @@ router.post('/login', async (req,res)=>{
   if(! await user.checkPassword(req.body.password)){
     return res.sendStatus(401);
   }
+  try{
+    await user.verifyToken()
+  } catch(err){
+    user.token = await User.generateToken();
+    await user.save()
+  }
 
   res.send(user);
 
