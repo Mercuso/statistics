@@ -32,7 +32,7 @@ async function getAll(req, res) {
   const constants = await Constant.find({
     $or:[
       {'public_access':true},
-      {'_id':mongoose.Types.ObjectId(req.params.id)}
+      {'creator_id':mongoose.Types.ObjectId(req.user.id)}
     ]
   });
   res.send(constants);

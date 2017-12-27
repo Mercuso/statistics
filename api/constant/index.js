@@ -9,19 +9,21 @@ const {checkAuth} = require('../../common/lib/auth');
 
 const Constant = require('../../db/models/constant');
 
-router.post('/', checkAuth, async (req,res)=>{
-  try {
-    return await constantCtrl.createConstant(req,res)
-  } catch(err){
-     return res.status(500).send(err)
+function fetchAsync(asyncController) {
+  return async (req,res)=>{
+    try {
+      return await asyncController(req,res)
+    } catch(err){
+      return res.status(500).send(err)
+    }
   }
-});
+}
+//Private requests::::::
+router.post('/', checkAuth, fetchAsync(constantCtrl.createConstant));
+router.get('/', checkAuth, fetchAsync(constantCtrl.getAll));
 
-router.get('/', constantCtrl.getAll);
-
-router.get('/:id', constantCtrl.getById);
-
-router.put('/:id', constantCtrl.edit);
-
+router.get('/:id', checkAuth, fetchAsync(constantCtrl.getById));
+router.put('/:id', checkAuth, fetchAsync(constantCtrl.edit));
+//::::::::::::::::::::::
 
 module.exports = router;
