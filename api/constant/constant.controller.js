@@ -1,13 +1,20 @@
 /**
  * Created by mercuso on 23.12.17.
  */
+const mongoose = require('mongoose');
 const Constant = require('../../db/models/constant');
 
 async function createConstant(req, res) {
-  let constant = new Constant(req.body);
-  let result = await constant.save();
+  let constant_info = req.body;
+  constant_info.creator_id = req.user._id;
 
-  res.send(result);
+  let constant = new Constant(req.body);
+  try{
+    let result = await constant.save();
+    res.send(result);
+  } catch(err){
+    res.sendStatus(422)
+  }
 }
 
 async function edit(req,res) {
@@ -22,7 +29,12 @@ async function edit(req,res) {
 }
 
 async function getAll(req, res) {
-  const constants = await Constant.find({});
+  const constants = await Constant.find({
+    $or:[
+      {'public_access':true},
+      {'_id':mongoose.Types.ObjectId(req.params.id)}
+    ]
+  });
   res.send(constants);
 }
 
