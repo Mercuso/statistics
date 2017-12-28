@@ -1,7 +1,7 @@
 /**
  * Created by mercuso on 23.12.17.
  */
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 const Constant = require('../../db/models/constant');
 
 async function createConstant(req, res) {
@@ -30,10 +30,11 @@ async function edit(req,res) {
 
 async function getAll(req, res) {
   const constants = await Constant.find({
-    $or:[
+    'creator_id':req.user._id
+    /*$or:[
       {'public_access':true},
-      {'creator_id':mongoose.Types.ObjectId(req.user.id)}
-    ]
+      {'creator_id':req.user._id}
+    ]*/
   });
   res.send(constants);
 }

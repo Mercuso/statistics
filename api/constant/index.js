@@ -7,8 +7,6 @@ const router = express.Router();
 const constantCtrl = require('./constant.controller');
 const {checkAuth} = require('../../common/lib/auth');
 
-const Constant = require('../../db/models/constant');
-
 function fetchAsync(asyncController) {
   return async (req,res)=>{
     try {

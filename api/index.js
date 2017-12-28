@@ -44,7 +44,10 @@ app.use(function(err, req, res, next) {
   if (err.status===404){
 
     res.sendStatus(404)
+  } else if(err.message === 'Validation failed'){
+    res.status(422).send(err.array())
   } else {
+    console.log(err);
     res.sendStatus(500);
   }
 });
